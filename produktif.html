@@ -1,0 +1,1525 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Activity Harian</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  padding: 20px;
+  color: #333;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+header {
+  text-align: center;
+  color: white;
+  margin-bottom: 25px;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  margin-bottom: 5px;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+header p {
+  opacity: 0.9;
+}
+
+/* =========================
+   FORM
+========================= */
+
+.form-card {
+  background: white;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  margin-bottom: 20px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 2fr 1.2fr 1fr 1fr 1.5fr auto;
+  gap: 10px;
+  align-items: end;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border 0.2s;
+  background: #fafafa;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #667eea;
+  background: white;
+}
+
+.btn-add {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  height: 42px;
+  white-space: nowrap;
+}
+
+.btn-add:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102,126,234,0.4);
+}
+
+.btn-add:active {
+  transform: scale(0.97);
+}
+
+/* =========================
+   FILTER
+========================= */
+
+.filter-section {
+  background: rgba(255,255,255,0.15);
+  padding: 12px 16px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.25);
+}
+
+.filter-section label {
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.filter-section input[type="date"] {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: none;
+  font-size: 0.85rem;
+  outline: none;
+}
+
+.filter-section button {
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: none;
+  background: white;
+  color: #764ba2;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: transform 0.2s;
+}
+
+.filter-section button:hover {
+  transform: translateY(-2px);
+}
+
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filter-bar button {
+  padding: 7px 16px;
+  border: 2px solid rgba(255,255,255,0.5);
+  background: rgba(255,255,255,0.15);
+  color: white;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.2s;
+  backdrop-filter: blur(5px);
+}
+
+.filter-bar button.active,
+.filter-bar button:hover {
+  background: white;
+  color: #764ba2;
+  border-color: white;
+}
+
+/* =========================
+   BOARD
+========================= */
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.column {
+  background: white;
+  border-radius: 14px;
+  padding: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+  min-height: 300px;
+}
+
+.column-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 3px solid;
+  margin-bottom: 12px;
+}
+
+.column-header h2 {
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.badge {
+  font-size: 0.75rem;
+  padding: 2px 9px;
+  border-radius: 20px;
+  color: white;
+  font-weight: 600;
+}
+
+.col-tugas .column-header {
+  border-color: #ff6b6b;
+}
+
+.col-tugas .badge {
+  background: #ff6b6b;
+}
+
+.col-jadwal .column-header {
+  border-color: #4dabf7;
+}
+
+.col-jadwal .badge {
+  background: #4dabf7;
+}
+
+.col-main .column-header {
+  border-color: #51cf66;
+}
+
+.col-main .badge {
+  background: #51cf66;
+}
+
+/* Kategori baru: KEGIATAN */
+.col-kegiatan .column-header {
+  border-color: #ffa94d;
+}
+
+.col-kegiatan .badge {
+  background: #ffa94d;
+}
+
+/* =========================
+   ITEM
+========================= */
+
+.item {
+  background: #f8f9ff;
+  border-left: 4px solid #ccc;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 10px;
+  animation: slideIn 0.3s ease;
+  transition: transform 0.2s;
+}
+
+.item:hover {
+  transform: translateX(3px);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.col-tugas .item {
+  border-left-color: #ff6b6b;
+}
+
+.col-jadwal .item {
+  border-left-color: #4dabf7;
+}
+
+.col-main .item {
+  border-left-color: #51cf66;
+}
+
+.col-kegiatan .item {
+  border-left-color: #ffa94d;
+}
+
+.item-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.item-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #2c3e50;
+  word-break: break-word;
+}
+
+.btn-del {
+  background: none;
+  border: none;
+  color: #bbb;
+  cursor: pointer;
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 0 3px;
+  transition: color 0.2s;
+}
+
+.btn-del:hover {
+  color: #ff6b6b;
+}
+
+.item-meta {
+  font-size: 0.8rem;
+  color: #666;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.item-date {
+  background: #e7f5ff;
+  color: #1971c2;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+
+.item-desc {
+  font-size: 0.82rem;
+  color: #777;
+  font-style: italic;
+  margin: 6px 0 8px;
+  padding: 5px 8px;
+  background: rgba(0,0,0,0.03);
+  border-radius: 6px;
+}
+
+.status-select {
+  width: 100%;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 2px solid #e0e0e0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  background: white;
+}
+
+.status-select.belum {
+  border-color: #ffd43b;
+  color: #b8860b;
+  background: #fff9db;
+}
+
+.status-select.terlaksana {
+  border-color: #51cf66;
+  color: #2b8a3e;
+  background: #ebfbee;
+}
+
+.status-select.tidak {
+  border-color: #ff6b6b;
+  color: #c92a2a;
+  background: #fff5f5;
+}
+
+.empty {
+  text-align: center;
+  color: #bbb;
+  font-size: 0.85rem;
+  padding: 20px 0;
+  font-style: italic;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1200px) {
+  .board {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 1000px) {
+  .form-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .btn-add {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 700px) {
+  .board {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  body {
+    padding: 12px;
+  }
+
+  header h1 {
+    font-size: 1.7rem;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .btn-add {
+    grid-column: span 1;
+  }
+
+  .filter-section {
+    align-items: stretch;
+  }
+
+  .filter-bar {
+    width: 100%;
+  }
+
+  .filter-bar button {
+    flex: 1;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <header>
+    <h1>📋 Activity Harian</h1>
+    <p>Kelola tugas, jadwal, kegiatan, dan waktu main kamu</p>
+  </header>
+
+  <!-- =========================
+       FILTER
+  ========================== -->
+
+  <div class="filter-section">
+
+    <label>📅 Tanggal:</label>
+
+    <input
+      type="date"
+      id="filterTanggal"
+    >
+
+    <button type="button" id="btnHariIni">
+      Hari Ini
+    </button>
+
+    <button type="button" id="btnSemuaTanggal">
+      Semua Tanggal
+    </button>
+
+    <div
+      class="filter-bar"
+      style="margin-left:auto;"
+    >
+      <button
+        type="button"
+        class="active"
+        data-filter="all"
+      >
+        Semua
+      </button>
+
+      <button
+        type="button"
+        data-filter="belum"
+      >
+        Belum
+      </button>
+
+      <button
+        type="button"
+        data-filter="terlaksana"
+      >
+        Terlaksana
+      </button>
+
+      <button
+        type="button"
+        data-filter="tidak"
+      >
+        Tidak
+      </button>
+    </div>
+
+  </div>
+
+  <!-- =========================
+       FORM TAMBAH
+  ========================== -->
+
+  <div class="form-card">
+
+    <div class="form-grid">
+
+      <div class="form-group">
+        <label for="nama">
+          Nama Aktivitas
+        </label>
+
+        <input
+          type="text"
+          id="nama"
+          placeholder="Contoh: Belajar Matematika"
+          autocomplete="off"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="kategori">
+          Kategori
+        </label>
+
+        <select id="kategori">
+          <option value="tugas">
+            📌 Tugas
+          </option>
+
+          <option value="jadwal">
+            🗓️ Jadwal
+          </option>
+
+          <option value="kegiatan">
+            🎯 Kegiatan
+          </option>
+
+          <option value="main">
+            🎮 Main
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="tanggal">
+          Tanggal
+        </label>
+
+        <input
+          type="date"
+          id="tanggal"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="jam">
+          Jam
+        </label>
+
+        <input
+          type="time"
+          id="jam"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="keterangan">
+          Keterangan
+        </label>
+
+        <input
+          type="text"
+          id="keterangan"
+          placeholder="Opsional..."
+          autocomplete="off"
+        >
+      </div>
+
+      <button
+        type="button"
+        class="btn-add"
+        id="btnTambah"
+      >
+        + Tambah
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- =========================
+       BOARD
+  ========================== -->
+
+  <div class="board">
+
+    <!-- TUGAS -->
+
+    <div class="column col-tugas">
+
+      <div class="column-header">
+
+        <h2>
+          📌 Tugas
+        </h2>
+
+        <span
+          class="badge"
+          id="count-tugas"
+        >
+          0
+        </span>
+
+      </div>
+
+      <div id="list-tugas"></div>
+
+    </div>
+
+    <!-- JADWAL -->
+
+    <div class="column col-jadwal">
+
+      <div class="column-header">
+
+        <h2>
+          🗓️ Jadwal
+        </h2>
+
+        <span
+          class="badge"
+          id="count-jadwal"
+        >
+          0
+        </span>
+
+      </div>
+
+      <div id="list-jadwal"></div>
+
+    </div>
+
+    <!-- KEGIATAN (BARU) -->
+
+    <div class="column col-kegiatan">
+
+      <div class="column-header">
+
+        <h2>
+          🎯 Kegiatan
+        </h2>
+
+        <span
+          class="badge"
+          id="count-kegiatan"
+        >
+          0
+        </span>
+
+      </div>
+
+      <div id="list-kegiatan"></div>
+
+    </div>
+
+    <!-- MAIN -->
+
+    <div class="column col-main">
+
+      <div class="column-header">
+
+        <h2>
+          🎮 Main
+        </h2>
+
+        <span
+          class="badge"
+          id="count-main"
+        >
+          0
+        </span>
+
+      </div>
+
+      <div id="list-main"></div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+
+/* =========================================================
+   DATABASE LOCAL
+========================================================= */
+
+const STORAGE_KEY = 'activitiesHarian';
+
+let activities = [];
+
+try {
+  const saved = localStorage.getItem(STORAGE_KEY);
+
+  if (saved) {
+    const parsed = JSON.parse(saved);
+
+    if (Array.isArray(parsed)) {
+      activities = parsed;
+    }
+  }
+} catch (error) {
+  console.error('Gagal membaca data:', error);
+  activities = [];
+}
+
+
+/* =========================================================
+   KATEGORI
+========================================================= */
+
+const KATEGORI_LIST = [
+  'tugas',
+  'jadwal',
+  'kegiatan', // BARU
+  'main'
+];
+
+
+/* =========================================================
+   FILTER
+========================================================= */
+
+let currentFilter = 'all';
+
+let filterTanggal = '';
+
+let pakaiFilterTanggal = true;
+
+
+/* =========================================================
+   ELEMENT
+========================================================= */
+
+const namaInput =
+  document.getElementById('nama');
+
+const kategoriInput =
+  document.getElementById('kategori');
+
+const tanggalInput =
+  document.getElementById('tanggal');
+
+const jamInput =
+  document.getElementById('jam');
+
+const keteranganInput =
+  document.getElementById('keterangan');
+
+const filterTanggalInput =
+  document.getElementById('filterTanggal');
+
+const btnTambah =
+  document.getElementById('btnTambah');
+
+
+/* =========================================================
+   TANGGAL HARI INI
+========================================================= */
+
+function todayStr() {
+
+  const d = new Date();
+
+  const year =
+    d.getFullYear();
+
+  const month =
+    String(d.getMonth() + 1).padStart(2, '0');
+
+  const day =
+    String(d.getDate()).padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+}
+
+
+/* =========================================================
+   SIMPAN
+========================================================= */
+
+function simpan() {
+
+  try {
+
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(activities)
+    );
+
+  } catch (error) {
+
+    console.error(
+      'Gagal menyimpan data:',
+      error
+    );
+
+    alert(
+      'Data gagal disimpan di browser.'
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   FORMAT TANGGAL
+========================================================= */
+
+function formatTanggal(str) {
+
+  if (!str) {
+    return '-';
+  }
+
+  const parts =
+    str.split('-');
+
+  if (parts.length !== 3) {
+    return str;
+  }
+
+  const y = parts[0];
+  const m = parts[1];
+  const d = parts[2];
+
+  const bulan = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'Mei',
+    'Jun',
+    'Jul',
+    'Agu',
+    'Sep',
+    'Okt',
+    'Nov',
+    'Des'
+  ];
+
+  return `${d} ${bulan[parseInt(m, 10) - 1]} ${y}`;
+}
+
+
+/* =========================================================
+   LABEL HARI
+========================================================= */
+
+function hariIni(str) {
+
+  if (str === todayStr()) {
+
+    return '🔵 Hari Ini';
+
+  }
+
+  return `📅 ${formatTanggal(str)}`;
+
+}
+
+
+/* =========================================================
+   TAMBAH AKTIVITAS
+========================================================= */
+
+function tambahItem() {
+
+  const nama =
+    namaInput.value.trim();
+
+  const kategori =
+    kategoriInput.value;
+
+  const tanggal =
+    tanggalInput.value;
+
+  const jam =
+    jamInput.value;
+
+  const keterangan =
+    keteranganInput.value.trim();
+
+
+  /* Validasi nama */
+
+  if (!nama) {
+
+    alert(
+      'Nama aktivitas tidak boleh kosong!'
+    );
+
+    namaInput.focus();
+
+    return;
+
+  }
+
+
+  /* Validasi tanggal */
+
+  if (!tanggal) {
+
+    alert(
+      'Tanggal harus diisi!'
+    );
+
+    tanggalInput.focus();
+
+    return;
+
+  }
+
+
+  /* Validasi kategori */
+
+  if (!KATEGORI_LIST.includes(kategori)) {
+
+    alert(
+      'Kategori aktivitas tidak valid!'
+    );
+
+    return;
+
+  }
+
+
+  /* Buat ID */
+
+  const id =
+    Date.now() +
+    Math.floor(Math.random() * 1000);
+
+
+  /* Tambahkan data */
+
+  const newActivity = {
+
+    id: id,
+
+    nama: nama,
+
+    kategori: kategori,
+
+    tanggal: tanggal,
+
+    jam: jam || '-',
+
+    keterangan: keterangan,
+
+    status: 'belum'
+
+  };
+
+
+  activities.push(newActivity);
+
+
+  /* Simpan */
+
+  simpan();
+
+
+  /* Render */
+
+  render();
+
+
+  /* Reset form */
+
+  namaInput.value = '';
+
+  jamInput.value = '';
+
+  keteranganInput.value = '';
+
+
+  /* Fokus kembali ke nama */
+
+  namaInput.focus();
+
+}
+
+
+/* =========================================================
+   HAPUS AKTIVITAS
+========================================================= */
+
+function hapusItem(id) {
+
+  const item =
+    activities.find(
+      activity => activity.id === id
+    );
+
+  if (!item) {
+    return;
+  }
+
+
+  const yakin =
+    confirm(
+      `Hapus aktivitas "${item.nama}"?`
+    );
+
+  if (!yakin) {
+    return;
+  }
+
+
+  activities =
+    activities.filter(
+      activity => activity.id !== id
+    );
+
+
+  simpan();
+
+  render();
+
+}
+
+
+/* =========================================================
+   UBAH STATUS
+========================================================= */
+
+function ubahStatus(id, status) {
+
+  const item =
+    activities.find(
+      activity => activity.id === id
+    );
+
+  if (!item) {
+    return;
+  }
+
+
+  item.status = status;
+
+  simpan();
+
+  render();
+
+}
+
+
+/* =========================================================
+   STATUS CLASS
+========================================================= */
+
+function statusClass(status) {
+
+  if (status === 'terlaksana') {
+    return 'terlaksana';
+  }
+
+  if (status === 'tidak') {
+    return 'tidak';
+  }
+
+  return 'belum';
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHtml(value) {
+
+  const div =
+    document.createElement('div');
+
+  div.textContent =
+    String(value ?? '');
+
+  return div.innerHTML;
+
+}
+
+
+/* =========================================================
+   FILTER TANGGAL
+========================================================= */
+
+function resetFilterTanggal() {
+
+  pakaiFilterTanggal = true;
+
+  filterTanggal =
+    todayStr();
+
+  filterTanggalInput.value =
+    filterTanggal;
+
+  render();
+
+}
+
+
+function semuaTanggal() {
+
+  pakaiFilterTanggal = false;
+
+  filterTanggal = '';
+
+  filterTanggalInput.value = '';
+
+  render();
+
+}
+
+
+/* =========================================================
+   FILTER TANGGAL EVENT
+========================================================= */
+
+filterTanggalInput.addEventListener(
+  'change',
+  function () {
+
+    if (this.value) {
+
+      pakaiFilterTanggal = true;
+
+      filterTanggal =
+        this.value;
+
+    } else {
+
+      pakaiFilterTanggal = false;
+
+      filterTanggal = '';
+
+    }
+
+    render();
+
+  }
+);
+
+
+/* =========================================================
+   RENDER
+========================================================= */
+
+function render() {
+
+  KATEGORI_LIST.forEach(
+    function (kategori) {
+
+      const list =
+        document.getElementById(
+          'list-' + kategori
+        );
+
+
+      let items =
+        activities.filter(
+          function (activity) {
+
+            return activity.kategori === kategori;
+
+          }
+        );
+
+
+      /* Filter tanggal */
+
+      if (
+        pakaiFilterTanggal &&
+        filterTanggal
+      ) {
+
+        items =
+          items.filter(
+            function (activity) {
+
+              return (
+                activity.tanggal ===
+                filterTanggal
+              );
+
+            }
+          );
+
+      }
+
+
+      /* Filter status */
+
+      if (currentFilter !== 'all') {
+
+        items =
+          items.filter(
+            function (activity) {
+
+              return (
+                activity.status ===
+                currentFilter
+              );
+
+            }
+          );
+
+      }
+
+
+      /* Urutkan tanggal + jam */
+
+      items.sort(
+        function (a, b) {
+
+          const keyA =
+            `${a.tanggal || ''}_${a.jam || ''}`;
+
+          const keyB =
+            `${b.tanggal || ''}_${b.jam || ''}`;
+
+          return keyA.localeCompare(keyB);
+
+        }
+      );
+
+
+      /* Update jumlah */
+
+      document.getElementById(
+        'count-' + kategori
+      ).textContent =
+        items.length;
+
+
+      /* Jika kosong */
+
+      if (items.length === 0) {
+
+        list.innerHTML =
+          '<div class="empty">Belum ada aktivitas</div>';
+
+        return;
+
+      }
+
+
+      /* Tampilkan item */
+
+      list.innerHTML =
+        items.map(
+          function (item) {
+
+            const status =
+              item.status || 'belum';
+
+
+            return `
+
+              <div class="item">
+
+                <div class="item-top">
+
+                  <div class="item-name">
+                    ${escapeHtml(item.nama)}
+                  </div>
+
+                  <button
+                    type="button"
+                    class="btn-del"
+                    onclick="hapusItem(${item.id})"
+                    title="Hapus"
+                  >
+                    ✕
+                  </button>
+
+                </div>
+
+
+                <div class="item-meta">
+
+                  <span class="item-date">
+                    ${hariIni(item.tanggal)}
+                  </span>
+
+                  <span>
+                    🕒 ${escapeHtml(item.jam || '-')}
+                  </span>
+
+                </div>
+
+
+                ${
+                  item.keterangan
+                  ?
+                  `
+                    <div class="item-desc">
+                      📝 ${escapeHtml(item.keterangan)}
+                    </div>
+                  `
+                  :
+                  ''
+                }
+
+
+                <select
+                  class="status-select ${statusClass(status)}"
+                  onchange="ubahStatus(${item.id}, this.value)"
+                >
+
+                  <option
+                    value="belum"
+                    ${status === 'belum' ? 'selected' : ''}
+                  >
+                    ⏳ Belum Terlaksana
+                  </option>
+
+                  <option
+                    value="terlaksana"
+                    ${status === 'terlaksana' ? 'selected' : ''}
+                  >
+                    ✔️ Terlaksana
+                  </option>
+
+                  <option
+                    value="tidak"
+                    ${status === 'tidak' ? 'selected' : ''}
+                  >
+                    ❌ Tidak Terlaksana
+                  </option>
+
+                </select>
+
+              </div>
+
+            `;
+
+          }
+        ).join('');
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   FILTER STATUS
+========================================================= */
+
+document
+  .querySelectorAll('.filter-bar button')
+  .forEach(
+    function (button) {
+
+      button.addEventListener(
+        'click',
+        function () {
+
+          document
+            .querySelectorAll('.filter-bar button')
+            .forEach(
+              function (btn) {
+
+                btn.classList.remove(
+                  'active'
+                );
+
+              }
+            );
+
+
+          this.classList.add(
+            'active'
+          );
+
+
+          currentFilter =
+            this.dataset.filter;
+
+
+          render();
+
+        }
+      );
+
+    }
+  );
+
+
+/* =========================================================
+   TOMBOL FILTER
+========================================================= */
+
+document
+  .getElementById('btnHariIni')
+  .addEventListener(
+    'click',
+    resetFilterTanggal
+  );
+
+
+document
+  .getElementById('btnSemuaTanggal')
+  .addEventListener(
+    'click',
+    semuaTanggal
+  );
+
+
+/* =========================================================
+   TOMBOL TAMBAH
+========================================================= */
+
+btnTambah.addEventListener(
+  'click',
+  tambahItem
+);
+
+
+/* =========================================================
+   ENTER UNTUK MENAMBAHKAN
+========================================================= */
+
+namaInput.addEventListener(
+  'keydown',
+  function (event) {
+
+    if (event.key === 'Enter') {
+
+      event.preventDefault();
+
+      tambahItem();
+
+    }
+
+  }
+);
+
+
+keteranganInput.addEventListener(
+  'keydown',
+  function (event) {
+
+    if (event.key === 'Enter') {
+
+      event.preventDefault();
+
+      tambahItem();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   DEFAULT TANGGAL FORM
+========================================================= */
+
+tanggalInput.value =
+  todayStr();
+
+
+/* =========================================================
+   DEFAULT FILTER
+========================================================= */
+
+resetFilterTanggal();
+
+
+/* =========================================================
+   RENDER PERTAMA
+========================================================= */
+
+render();
+
+</script>
+
+</body>
+</html>
