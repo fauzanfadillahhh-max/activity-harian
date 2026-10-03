@@ -41,6 +41,36 @@ header p {
   opacity: 0.9;
 }
 
+/* Status koneksi */
+.connection-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+.connection-status.online {
+  background: rgba(81, 207, 102, 0.3);
+  color: #d3f9d8;
+  border: 1px solid rgba(81, 207, 102, 0.5);
+}
+
+.connection-status.offline {
+  background: rgba(255, 107, 107, 0.3);
+  color: #ffe3e3;
+  border: 1px solid rgba(255, 107, 107, 0.5);
+}
+
+.connection-status.loading {
+  background: rgba(255, 212, 59, 0.3);
+  color: #fff9db;
+  border: 1px solid rgba(255, 212, 59, 0.5);
+}
+
 /* =========================
    FORM
 ========================= */
@@ -110,6 +140,12 @@ header p {
 
 .btn-add:active {
   transform: scale(0.97);
+}
+
+.btn-add:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
 }
 
 /* =========================
@@ -227,38 +263,17 @@ header p {
   font-weight: 600;
 }
 
-.col-tugas .column-header {
-  border-color: #ff6b6b;
-}
+.col-tugas .column-header { border-color: #ff6b6b; }
+.col-tugas .badge { background: #ff6b6b; }
 
-.col-tugas .badge {
-  background: #ff6b6b;
-}
+.col-jadwal .column-header { border-color: #4dabf7; }
+.col-jadwal .badge { background: #4dabf7; }
 
-.col-jadwal .column-header {
-  border-color: #4dabf7;
-}
+.col-main .column-header { border-color: #51cf66; }
+.col-main .badge { background: #51cf66; }
 
-.col-jadwal .badge {
-  background: #4dabf7;
-}
-
-.col-main .column-header {
-  border-color: #51cf66;
-}
-
-.col-main .badge {
-  background: #51cf66;
-}
-
-/* Kategori baru: KEGIATAN */
-.col-kegiatan .column-header {
-  border-color: #ffa94d;
-}
-
-.col-kegiatan .badge {
-  background: #ffa94d;
-}
+.col-kegiatan .column-header { border-color: #ffa94d; }
+.col-kegiatan .badge { background: #ffa94d; }
 
 /* =========================
    ITEM
@@ -279,32 +294,14 @@ header p {
 }
 
 @keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.col-tugas .item {
-  border-left-color: #ff6b6b;
-}
-
-.col-jadwal .item {
-  border-left-color: #4dabf7;
-}
-
-.col-main .item {
-  border-left-color: #51cf66;
-}
-
-.col-kegiatan .item {
-  border-left-color: #ffa94d;
-}
+.col-tugas .item { border-left-color: #ff6b6b; }
+.col-jadwal .item { border-left-color: #4dabf7; }
+.col-main .item { border-left-color: #51cf66; }
+.col-kegiatan .item { border-left-color: #ffa94d; }
 
 .item-top {
   display: flex;
@@ -332,9 +329,7 @@ header p {
   transition: color 0.2s;
 }
 
-.btn-del:hover {
-  color: #ff6b6b;
-}
+.btn-del:hover { color: #ff6b6b; }
 
 .item-meta {
   font-size: 0.8rem;
@@ -377,23 +372,9 @@ header p {
   background: white;
 }
 
-.status-select.belum {
-  border-color: #ffd43b;
-  color: #b8860b;
-  background: #fff9db;
-}
-
-.status-select.terlaksana {
-  border-color: #51cf66;
-  color: #2b8a3e;
-  background: #ebfbee;
-}
-
-.status-select.tidak {
-  border-color: #ff6b6b;
-  color: #c92a2a;
-  background: #fff5f5;
-}
+.status-select.belum { border-color: #ffd43b; color: #b8860b; background: #fff9db; }
+.status-select.terlaksana { border-color: #51cf66; color: #2b8a3e; background: #ebfbee; }
+.status-select.tidak { border-color: #ff6b6b; color: #c92a2a; background: #fff5f5; }
 
 .empty {
   text-align: center;
@@ -408,55 +389,26 @@ header p {
 ========================= */
 
 @media (max-width: 1200px) {
-  .board {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  .board { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 1000px) {
-  .form-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .btn-add {
-    grid-column: span 2;
-  }
+  .form-grid { grid-template-columns: 1fr 1fr; }
+  .btn-add { grid-column: span 2; }
 }
 
 @media (max-width: 700px) {
-  .board {
-    grid-template-columns: 1fr;
-  }
+  .board { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 600px) {
-  body {
-    padding: 12px;
-  }
-
-  header h1 {
-    font-size: 1.7rem;
-  }
-
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .btn-add {
-    grid-column: span 1;
-  }
-
-  .filter-section {
-    align-items: stretch;
-  }
-
-  .filter-bar {
-    width: 100%;
-  }
-
-  .filter-bar button {
-    flex: 1;
-  }
+  body { padding: 12px; }
+  header h1 { font-size: 1.7rem; }
+  .form-grid { grid-template-columns: 1fr; }
+  .btn-add { grid-column: span 1; }
+  .filter-section { align-items: stretch; }
+  .filter-bar { width: 100%; }
+  .filter-bar button { flex: 1; }
 }
 </style>
 </head>
@@ -468,1055 +420,446 @@ header p {
   <header>
     <h1>📋 Activity Harian</h1>
     <p>Kelola tugas, jadwal, kegiatan, dan waktu main kamu</p>
+    <div id="connectionStatus" class="connection-status loading">
+      ⏳ Menghubungkan...
+    </div>
   </header>
 
-  <!-- =========================
-       FILTER
-  ========================== -->
-
+  <!-- FILTER -->
   <div class="filter-section">
-
     <label>📅 Tanggal:</label>
+    <input type="date" id="filterTanggal">
+    <button type="button" id="btnHariIni">Hari Ini</button>
+    <button type="button" id="btnSemuaTanggal">Semua Tanggal</button>
 
-    <input
-      type="date"
-      id="filterTanggal"
-    >
-
-    <button type="button" id="btnHariIni">
-      Hari Ini
-    </button>
-
-    <button type="button" id="btnSemuaTanggal">
-      Semua Tanggal
-    </button>
-
-    <div
-      class="filter-bar"
-      style="margin-left:auto;"
-    >
-      <button
-        type="button"
-        class="active"
-        data-filter="all"
-      >
-        Semua
-      </button>
-
-      <button
-        type="button"
-        data-filter="belum"
-      >
-        Belum
-      </button>
-
-      <button
-        type="button"
-        data-filter="terlaksana"
-      >
-        Terlaksana
-      </button>
-
-      <button
-        type="button"
-        data-filter="tidak"
-      >
-        Tidak
-      </button>
+    <div class="filter-bar" style="margin-left:auto;">
+      <button type="button" class="active" data-filter="all">Semua</button>
+      <button type="button" data-filter="belum">Belum</button>
+      <button type="button" data-filter="terlaksana">Terlaksana</button>
+      <button type="button" data-filter="tidak">Tidak</button>
     </div>
-
   </div>
 
-  <!-- =========================
-       FORM TAMBAH
-  ========================== -->
-
+  <!-- FORM TAMBAH -->
   <div class="form-card">
-
     <div class="form-grid">
-
       <div class="form-group">
-        <label for="nama">
-          Nama Aktivitas
-        </label>
-
-        <input
-          type="text"
-          id="nama"
-          placeholder="Contoh: Belajar Matematika"
-          autocomplete="off"
-        >
+        <label for="nama">Nama Aktivitas</label>
+        <input type="text" id="nama" placeholder="Contoh: Belajar Matematika" autocomplete="off">
       </div>
 
       <div class="form-group">
-        <label for="kategori">
-          Kategori
-        </label>
-
+        <label for="kategori">Kategori</label>
         <select id="kategori">
-          <option value="tugas">
-            📌 Tugas
-          </option>
-
-          <option value="jadwal">
-            🗓️ Jadwal
-          </option>
-
-          <option value="kegiatan">
-            🎯 Kegiatan
-          </option>
-
-          <option value="main">
-            🎮 Main
-          </option>
+          <option value="tugas">📌 Tugas</option>
+          <option value="jadwal">🗓️ Jadwal</option>
+          <option value="kegiatan">🎯 Kegiatan</option>
+          <option value="main">🎮 Main</option>
         </select>
       </div>
 
       <div class="form-group">
-        <label for="tanggal">
-          Tanggal
-        </label>
-
-        <input
-          type="date"
-          id="tanggal"
-        >
+        <label for="tanggal">Tanggal</label>
+        <input type="date" id="tanggal">
       </div>
 
       <div class="form-group">
-        <label for="jam">
-          Jam
-        </label>
-
-        <input
-          type="time"
-          id="jam"
-        >
+        <label for="jam">Jam</label>
+        <input type="time" id="jam">
       </div>
 
       <div class="form-group">
-        <label for="keterangan">
-          Keterangan
-        </label>
-
-        <input
-          type="text"
-          id="keterangan"
-          placeholder="Opsional..."
-          autocomplete="off"
-        >
+        <label for="keterangan">Keterangan</label>
+        <input type="text" id="keterangan" placeholder="Opsional..." autocomplete="off">
       </div>
 
-      <button
-        type="button"
-        class="btn-add"
-        id="btnTambah"
-      >
-        + Tambah
-      </button>
-
+      <button type="button" class="btn-add" id="btnTambah">+ Tambah</button>
     </div>
-
   </div>
 
-  <!-- =========================
-       BOARD
-  ========================== -->
-
+  <!-- BOARD -->
   <div class="board">
-
-    <!-- TUGAS -->
-
     <div class="column col-tugas">
-
       <div class="column-header">
-
-        <h2>
-          📌 Tugas
-        </h2>
-
-        <span
-          class="badge"
-          id="count-tugas"
-        >
-          0
-        </span>
-
+        <h2>📌 Tugas</h2>
+        <span class="badge" id="count-tugas">0</span>
       </div>
-
       <div id="list-tugas"></div>
-
     </div>
-
-    <!-- JADWAL -->
 
     <div class="column col-jadwal">
-
       <div class="column-header">
-
-        <h2>
-          🗓️ Jadwal
-        </h2>
-
-        <span
-          class="badge"
-          id="count-jadwal"
-        >
-          0
-        </span>
-
+        <h2>🗓️ Jadwal</h2>
+        <span class="badge" id="count-jadwal">0</span>
       </div>
-
       <div id="list-jadwal"></div>
-
     </div>
-
-    <!-- KEGIATAN (BARU) -->
 
     <div class="column col-kegiatan">
-
       <div class="column-header">
-
-        <h2>
-          🎯 Kegiatan
-        </h2>
-
-        <span
-          class="badge"
-          id="count-kegiatan"
-        >
-          0
-        </span>
-
+        <h2>🎯 Kegiatan</h2>
+        <span class="badge" id="count-kegiatan">0</span>
       </div>
-
       <div id="list-kegiatan"></div>
-
     </div>
-
-    <!-- MAIN -->
 
     <div class="column col-main">
-
       <div class="column-header">
-
-        <h2>
-          🎮 Main
-        </h2>
-
-        <span
-          class="badge"
-          id="count-main"
-        >
-          0
-        </span>
-
+        <h2>🎮 Main</h2>
+        <span class="badge" id="count-main">0</span>
       </div>
-
       <div id="list-main"></div>
-
     </div>
-
   </div>
 
 </div>
 
-<script>
+<script type="module">
 
 /* =========================================================
-   DATABASE LOCAL
+   FIREBASE SDK
 ========================================================= */
 
-const STORAGE_KEY = 'activitiesHarian';
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import {
+  getDatabase,
+  ref,
+  onValue,
+  push,
+  set,
+  remove,
+  update
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+/* =========================================================
+   KONFIGURASI FIREBASE
+========================================================= */
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAqMZYihFO7ZOQo2LH21gMVTE8dhSW40fA",
+  authDomain: "activity-harian-bca64.firebaseapp.com",
+  databaseURL: "https://activity-harian-bca64-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "activity-harian-bca64",
+  storageBucket: "activity-harian-bca64.firebasestorage.app",
+  messagingSenderId: "879497795226",
+  appId: "1:879497795226:web:b3dc2cc7a425a3939ff123"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+/* =========================================================
+   STATE
+========================================================= */
 
 let activities = [];
-
-try {
-  const saved = localStorage.getItem(STORAGE_KEY);
-
-  if (saved) {
-    const parsed = JSON.parse(saved);
-
-    if (Array.isArray(parsed)) {
-      activities = parsed;
-    }
-  }
-} catch (error) {
-  console.error('Gagal membaca data:', error);
-  activities = [];
-}
-
-
-/* =========================================================
-   KATEGORI
-========================================================= */
-
-const KATEGORI_LIST = [
-  'tugas',
-  'jadwal',
-  'kegiatan', // BARU
-  'main'
-];
-
-
-/* =========================================================
-   FILTER
-========================================================= */
-
 let currentFilter = 'all';
-
 let filterTanggal = '';
-
 let pakaiFilterTanggal = true;
+let firebaseReady = false;
 
+const KATEGORI_LIST = ['tugas', 'jadwal', 'kegiatan', 'main'];
+const STORAGE_KEY = 'activitiesHarian'; // untuk mode offline sementara
 
 /* =========================================================
    ELEMENT
 ========================================================= */
 
-const namaInput =
-  document.getElementById('nama');
-
-const kategoriInput =
-  document.getElementById('kategori');
-
-const tanggalInput =
-  document.getElementById('tanggal');
-
-const jamInput =
-  document.getElementById('jam');
-
-const keteranganInput =
-  document.getElementById('keterangan');
-
-const filterTanggalInput =
-  document.getElementById('filterTanggal');
-
-const btnTambah =
-  document.getElementById('btnTambah');
-
+const namaInput = document.getElementById('nama');
+const kategoriInput = document.getElementById('kategori');
+const tanggalInput = document.getElementById('tanggal');
+const jamInput = document.getElementById('jam');
+const keteranganInput = document.getElementById('keterangan');
+const filterTanggalInput = document.getElementById('filterTanggal');
+const btnTambah = document.getElementById('btnTambah');
+const connectionStatus = document.getElementById('connectionStatus');
 
 /* =========================================================
    TANGGAL HARI INI
 ========================================================= */
 
 function todayStr() {
-
   const d = new Date();
-
-  const year =
-    d.getFullYear();
-
-  const month =
-    String(d.getMonth() + 1).padStart(2, '0');
-
-  const day =
-    String(d.getDate()).padStart(2, '0');
-
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
   return `${year}-${month}-${day}`;
 }
 
-
 /* =========================================================
-   SIMPAN
+   STATUS KONEKSI
 ========================================================= */
 
-function simpan() {
-
-  try {
-
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify(activities)
-    );
-
-  } catch (error) {
-
-    console.error(
-      'Gagal menyimpan data:',
-      error
-    );
-
-    alert(
-      'Data gagal disimpan di browser.'
-    );
-
-  }
-
+function setConnectionStatus(status, text) {
+  connectionStatus.className = 'connection-status ' + status;
+  connectionStatus.textContent = text;
 }
-
 
 /* =========================================================
    FORMAT TANGGAL
 ========================================================= */
 
 function formatTanggal(str) {
-
-  if (!str) {
-    return '-';
-  }
-
-  const parts =
-    str.split('-');
-
-  if (parts.length !== 3) {
-    return str;
-  }
-
+  if (!str) return '-';
+  const parts = str.split('-');
+  if (parts.length !== 3) return str;
   const y = parts[0];
   const m = parts[1];
   const d = parts[2];
-
-  const bulan = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'Mei',
-    'Jun',
-    'Jul',
-    'Agu',
-    'Sep',
-    'Okt',
-    'Nov',
-    'Des'
-  ];
-
+  const bulan = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
   return `${d} ${bulan[parseInt(m, 10) - 1]} ${y}`;
 }
 
-
-/* =========================================================
-   LABEL HARI
-========================================================= */
-
 function hariIni(str) {
-
-  if (str === todayStr()) {
-
-    return '🔵 Hari Ini';
-
-  }
-
+  if (str === todayStr()) return '🔵 Hari Ini';
   return `📅 ${formatTanggal(str)}`;
-
 }
-
-
-/* =========================================================
-   TAMBAH AKTIVITAS
-========================================================= */
-
-function tambahItem() {
-
-  const nama =
-    namaInput.value.trim();
-
-  const kategori =
-    kategoriInput.value;
-
-  const tanggal =
-    tanggalInput.value;
-
-  const jam =
-    jamInput.value;
-
-  const keterangan =
-    keteranganInput.value.trim();
-
-
-  /* Validasi nama */
-
-  if (!nama) {
-
-    alert(
-      'Nama aktivitas tidak boleh kosong!'
-    );
-
-    namaInput.focus();
-
-    return;
-
-  }
-
-
-  /* Validasi tanggal */
-
-  if (!tanggal) {
-
-    alert(
-      'Tanggal harus diisi!'
-    );
-
-    tanggalInput.focus();
-
-    return;
-
-  }
-
-
-  /* Validasi kategori */
-
-  if (!KATEGORI_LIST.includes(kategori)) {
-
-    alert(
-      'Kategori aktivitas tidak valid!'
-    );
-
-    return;
-
-  }
-
-
-  /* Buat ID */
-
-  const id =
-    Date.now() +
-    Math.floor(Math.random() * 1000);
-
-
-  /* Tambahkan data */
-
-  const newActivity = {
-
-    id: id,
-
-    nama: nama,
-
-    kategori: kategori,
-
-    tanggal: tanggal,
-
-    jam: jam || '-',
-
-    keterangan: keterangan,
-
-    status: 'belum'
-
-  };
-
-
-  activities.push(newActivity);
-
-
-  /* Simpan */
-
-  simpan();
-
-
-  /* Render */
-
-  render();
-
-
-  /* Reset form */
-
-  namaInput.value = '';
-
-  jamInput.value = '';
-
-  keteranganInput.value = '';
-
-
-  /* Fokus kembali ke nama */
-
-  namaInput.focus();
-
-}
-
-
-/* =========================================================
-   HAPUS AKTIVITAS
-========================================================= */
-
-function hapusItem(id) {
-
-  const item =
-    activities.find(
-      activity => activity.id === id
-    );
-
-  if (!item) {
-    return;
-  }
-
-
-  const yakin =
-    confirm(
-      `Hapus aktivitas "${item.nama}"?`
-    );
-
-  if (!yakin) {
-    return;
-  }
-
-
-  activities =
-    activities.filter(
-      activity => activity.id !== id
-    );
-
-
-  simpan();
-
-  render();
-
-}
-
-
-/* =========================================================
-   UBAH STATUS
-========================================================= */
-
-function ubahStatus(id, status) {
-
-  const item =
-    activities.find(
-      activity => activity.id === id
-    );
-
-  if (!item) {
-    return;
-  }
-
-
-  item.status = status;
-
-  simpan();
-
-  render();
-
-}
-
-
-/* =========================================================
-   STATUS CLASS
-========================================================= */
-
-function statusClass(status) {
-
-  if (status === 'terlaksana') {
-    return 'terlaksana';
-  }
-
-  if (status === 'tidak') {
-    return 'tidak';
-  }
-
-  return 'belum';
-
-}
-
 
 /* =========================================================
    ESCAPE HTML
 ========================================================= */
 
 function escapeHtml(value) {
-
-  const div =
-    document.createElement('div');
-
-  div.textContent =
-    String(value ?? '');
-
+  const div = document.createElement('div');
+  div.textContent = String(value ?? '');
   return div.innerHTML;
-
 }
-
 
 /* =========================================================
-   FILTER TANGGAL
+   STATUS CLASS
 ========================================================= */
 
-function resetFilterTanggal() {
-
-  pakaiFilterTanggal = true;
-
-  filterTanggal =
-    todayStr();
-
-  filterTanggalInput.value =
-    filterTanggal;
-
-  render();
-
+function statusClass(status) {
+  if (status === 'terlaksana') return 'terlaksana';
+  if (status === 'tidak') return 'tidak';
+  return 'belum';
 }
-
-
-function semuaTanggal() {
-
-  pakaiFilterTanggal = false;
-
-  filterTanggal = '';
-
-  filterTanggalInput.value = '';
-
-  render();
-
-}
-
-
-/* =========================================================
-   FILTER TANGGAL EVENT
-========================================================= */
-
-filterTanggalInput.addEventListener(
-  'change',
-  function () {
-
-    if (this.value) {
-
-      pakaiFilterTanggal = true;
-
-      filterTanggal =
-        this.value;
-
-    } else {
-
-      pakaiFilterTanggal = false;
-
-      filterTanggal = '';
-
-    }
-
-    render();
-
-  }
-);
-
 
 /* =========================================================
    RENDER
 ========================================================= */
 
 function render() {
+  KATEGORI_LIST.forEach(function (kategori) {
+    const list = document.getElementById('list-' + kategori);
 
-  KATEGORI_LIST.forEach(
-    function (kategori) {
+    let items = activities.filter(a => a.kategori === kategori);
 
-      const list =
-        document.getElementById(
-          'list-' + kategori
-        );
-
-
-      let items =
-        activities.filter(
-          function (activity) {
-
-            return activity.kategori === kategori;
-
-          }
-        );
-
-
-      /* Filter tanggal */
-
-      if (
-        pakaiFilterTanggal &&
-        filterTanggal
-      ) {
-
-        items =
-          items.filter(
-            function (activity) {
-
-              return (
-                activity.tanggal ===
-                filterTanggal
-              );
-
-            }
-          );
-
-      }
-
-
-      /* Filter status */
-
-      if (currentFilter !== 'all') {
-
-        items =
-          items.filter(
-            function (activity) {
-
-              return (
-                activity.status ===
-                currentFilter
-              );
-
-            }
-          );
-
-      }
-
-
-      /* Urutkan tanggal + jam */
-
-      items.sort(
-        function (a, b) {
-
-          const keyA =
-            `${a.tanggal || ''}_${a.jam || ''}`;
-
-          const keyB =
-            `${b.tanggal || ''}_${b.jam || ''}`;
-
-          return keyA.localeCompare(keyB);
-
-        }
-      );
-
-
-      /* Update jumlah */
-
-      document.getElementById(
-        'count-' + kategori
-      ).textContent =
-        items.length;
-
-
-      /* Jika kosong */
-
-      if (items.length === 0) {
-
-        list.innerHTML =
-          '<div class="empty">Belum ada aktivitas</div>';
-
-        return;
-
-      }
-
-
-      /* Tampilkan item */
-
-      list.innerHTML =
-        items.map(
-          function (item) {
-
-            const status =
-              item.status || 'belum';
-
-
-            return `
-
-              <div class="item">
-
-                <div class="item-top">
-
-                  <div class="item-name">
-                    ${escapeHtml(item.nama)}
-                  </div>
-
-                  <button
-                    type="button"
-                    class="btn-del"
-                    onclick="hapusItem(${item.id})"
-                    title="Hapus"
-                  >
-                    ✕
-                  </button>
-
-                </div>
-
-
-                <div class="item-meta">
-
-                  <span class="item-date">
-                    ${hariIni(item.tanggal)}
-                  </span>
-
-                  <span>
-                    🕒 ${escapeHtml(item.jam || '-')}
-                  </span>
-
-                </div>
-
-
-                ${
-                  item.keterangan
-                  ?
-                  `
-                    <div class="item-desc">
-                      📝 ${escapeHtml(item.keterangan)}
-                    </div>
-                  `
-                  :
-                  ''
-                }
-
-
-                <select
-                  class="status-select ${statusClass(status)}"
-                  onchange="ubahStatus(${item.id}, this.value)"
-                >
-
-                  <option
-                    value="belum"
-                    ${status === 'belum' ? 'selected' : ''}
-                  >
-                    ⏳ Belum Terlaksana
-                  </option>
-
-                  <option
-                    value="terlaksana"
-                    ${status === 'terlaksana' ? 'selected' : ''}
-                  >
-                    ✔️ Terlaksana
-                  </option>
-
-                  <option
-                    value="tidak"
-                    ${status === 'tidak' ? 'selected' : ''}
-                  >
-                    ❌ Tidak Terlaksana
-                  </option>
-
-                </select>
-
-              </div>
-
-            `;
-
-          }
-        ).join('');
-
+    // Filter tanggal
+    if (pakaiFilterTanggal && filterTanggal) {
+      items = items.filter(a => a.tanggal === filterTanggal);
     }
-  );
 
+    // Filter status
+    if (currentFilter !== 'all') {
+      items = items.filter(a => a.status === currentFilter);
+    }
+
+    // Sort by tanggal + jam
+    items.sort((a, b) => {
+      const keyA = `${a.tanggal || ''}_${a.jam || ''}`;
+      const keyB = `${b.tanggal || ''}_${b.jam || ''}`;
+      return keyA.localeCompare(keyB);
+    });
+
+    document.getElementById('count-' + kategori).textContent = items.length;
+
+    if (items.length === 0) {
+      list.innerHTML = '<div class="empty">Belum ada aktivitas</div>';
+      return;
+    }
+
+    list.innerHTML = items.map(function (item) {
+      const status = item.status || 'belum';
+      return `
+        <div class="item">
+          <div class="item-top">
+            <div class="item-name">${escapeHtml(item.nama)}</div>
+            <button type="button" class="btn-del" onclick="hapusItem('${item.id}')" title="Hapus">✕</button>
+          </div>
+          <div class="item-meta">
+            <span class="item-date">${hariIni(item.tanggal)}</span>
+            <span>🕒 ${escapeHtml(item.jam || '-')}</span>
+          </div>
+          ${item.keterangan ? `<div class="item-desc">📝 ${escapeHtml(item.keterangan)}</div>` : ''}
+          <select class="status-select ${statusClass(status)}" onchange="ubahStatus('${item.id}', this.value)">
+            <option value="belum" ${status === 'belum' ? 'selected' : ''}>⏳ Belum Terlaksana</option>
+            <option value="terlaksana" ${status === 'terlaksana' ? 'selected' : ''}>✔️ Terlaksana</option>
+            <option value="tidak" ${status === 'tidak' ? 'selected' : ''}>❌ Tidak Terlaksana</option>
+          </select>
+        </div>
+      `;
+    }).join('');
+  });
 }
 
+/* =========================================================
+   TAMBAH AKTIVITAS
+========================================================= */
+
+function tambahItem() {
+  const nama = namaInput.value.trim();
+  const kategori = kategoriInput.value;
+  const tanggal = tanggalInput.value;
+  const jam = jamInput.value;
+  const keterangan = keteranganInput.value.trim();
+
+  if (!nama) { alert('Nama aktivitas tidak boleh kosong!'); namaInput.focus(); return; }
+  if (!tanggal) { alert('Tanggal harus diisi!'); tanggalInput.focus(); return; }
+  if (!KATEGORI_LIST.includes(kategori)) { alert('Kategori tidak valid!'); return; }
+  if (!firebaseReady) { alert('Masih menghubungkan ke server, mohon tunggu...'); return; }
+
+  const newActivity = {
+    nama: nama,
+    kategori: kategori,
+    tanggal: tanggal,
+    jam: jam || '-',
+    keterangan: keterangan,
+    status: 'belum',
+    createdAt: Date.now()
+  };
+
+  // Simpan ke Firebase
+  const newRef = push(ref(db, 'activities'));
+  set(newRef, newActivity).then(() => {
+    namaInput.value = '';
+    jamInput.value = '';
+    keteranganInput.value = '';
+    namaInput.focus();
+  }).catch(err => {
+    alert('Gagal menyimpan: ' + err.message);
+  });
+}
+
+/* =========================================================
+   HAPUS AKTIVITAS
+========================================================= */
+
+function hapusItem(id) {
+  const item = activities.find(a => a.id === id);
+  if (!item) return;
+
+  if (!confirm(`Hapus aktivitas "${item.nama}"?`)) return;
+
+  remove(ref(db, 'activities/' + id)).catch(err => {
+    alert('Gagal menghapus: ' + err.message);
+  });
+}
+
+/* =========================================================
+   UBAH STATUS
+========================================================= */
+
+function ubahStatus(id, status) {
+  update(ref(db, 'activities/' + id), { status: status }).catch(err => {
+    alert('Gagal mengubah status: ' + err.message);
+  });
+}
+
+/* =========================================================
+   FILTER TANGGAL
+========================================================= */
+
+function resetFilterTanggal() {
+  pakaiFilterTanggal = true;
+  filterTanggal = todayStr();
+  filterTanggalInput.value = filterTanggal;
+  render();
+}
+
+function semuaTanggal() {
+  pakaiFilterTanggal = false;
+  filterTanggal = '';
+  filterTanggalInput.value = '';
+  render();
+}
+
+filterTanggalInput.addEventListener('change', function () {
+  if (this.value) {
+    pakaiFilterTanggal = true;
+    filterTanggal = this.value;
+  } else {
+    pakaiFilterTanggal = false;
+    filterTanggal = '';
+  }
+  render();
+});
 
 /* =========================================================
    FILTER STATUS
 ========================================================= */
 
-document
-  .querySelectorAll('.filter-bar button')
-  .forEach(
-    function (button) {
-
-      button.addEventListener(
-        'click',
-        function () {
-
-          document
-            .querySelectorAll('.filter-bar button')
-            .forEach(
-              function (btn) {
-
-                btn.classList.remove(
-                  'active'
-                );
-
-              }
-            );
-
-
-          this.classList.add(
-            'active'
-          );
-
-
-          currentFilter =
-            this.dataset.filter;
-
-
-          render();
-
-        }
-      );
-
-    }
-  );
-
+document.querySelectorAll('.filter-bar button').forEach(function (button) {
+  button.addEventListener('click', function () {
+    document.querySelectorAll('.filter-bar button').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    currentFilter = this.dataset.filter;
+    render();
+  });
+});
 
 /* =========================================================
    TOMBOL FILTER
 ========================================================= */
 
-document
-  .getElementById('btnHariIni')
-  .addEventListener(
-    'click',
-    resetFilterTanggal
-  );
-
-
-document
-  .getElementById('btnSemuaTanggal')
-  .addEventListener(
-    'click',
-    semuaTanggal
-  );
-
+document.getElementById('btnHariIni').addEventListener('click', resetFilterTanggal);
+document.getElementById('btnSemuaTanggal').addEventListener('click', semuaTanggal);
 
 /* =========================================================
    TOMBOL TAMBAH
 ========================================================= */
 
-btnTambah.addEventListener(
-  'click',
-  tambahItem
-);
+btnTambah.addEventListener('click', tambahItem);
 
+namaInput.addEventListener('keydown', function (e) {
+  if (e.key === 'Enter') { e.preventDefault(); tambahItem(); }
+});
+
+keteranganInput.addEventListener('keydown', function (e) {
+  if (e.key === 'Enter') { e.preventDefault(); tambahItem(); }
+});
 
 /* =========================================================
-   ENTER UNTUK MENAMBAHKAN
+   EXPOSE GLOBAL FUNCTIONS
 ========================================================= */
 
-namaInput.addEventListener(
-  'keydown',
-  function (event) {
+window.hapusItem = hapusItem;
+window.ubahStatus = ubahStatus;
 
-    if (event.key === 'Enter') {
+/* =========================================================
+   FIREBASE REALTIME LISTENER
+========================================================= */
 
-      event.preventDefault();
+const activitiesRef = ref(db, 'activities');
 
-      tambahItem();
+onValue(activitiesRef, function (snapshot) {
+  const data = snapshot.val();
+  activities = [];
 
-    }
-
+  if (data) {
+    Object.keys(data).forEach(function (key) {
+      activities.push({
+        id: key,
+        ...data[key]
+      });
+    });
   }
-);
 
+  firebaseReady = true;
+  setConnectionStatus('online', '🟢 Tersambung ke Cloud');
+  render();
 
-keteranganInput.addEventListener(
-  'keydown',
-  function (event) {
-
-    if (event.key === 'Enter') {
-
-      event.preventDefault();
-
-      tambahItem();
-
-    }
-
-  }
-);
-
+}, function (error) {
+  console.error('Firebase error:', error);
+  setConnectionStatus('offline', '🔴 Gagal terhubung');
+});
 
 /* =========================================================
-   DEFAULT TANGGAL FORM
+   DEFAULT
 ========================================================= */
 
-tanggalInput.value =
-  todayStr();
-
-
-/* =========================================================
-   DEFAULT FILTER
-========================================================= */
-
+tanggalInput.value = todayStr();
 resetFilterTanggal();
-
-
-/* =========================================================
-   RENDER PERTAMA
-========================================================= */
-
 render();
 
 </script>
