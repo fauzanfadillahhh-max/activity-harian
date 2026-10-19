@@ -364,6 +364,62 @@ header p { opacity: 0.9; }
   font-style: italic;
 }
 
+
+/* TEMPLATE AKTIVITAS */
+.template-panel {
+  margin-top: 16px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+.template-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.template-heading h3 { font-size: 1rem; color: #343a40; }
+.template-controls {
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) auto auto;
+  gap: 8px;
+  align-items: center;
+}
+.template-controls select,
+.template-controls button,
+.template-heading button {
+  padding: 9px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: .88rem;
+  background: #fff;
+  cursor: pointer;
+}
+.template-controls select { min-width: 0; }
+.btn-template-use {
+  background: #e7f5ff !important;
+  color: #1864ab;
+  border-color: #a5d8ff !important;
+  font-weight: 700;
+}
+.btn-template-save {
+  background: #ebfbee !important;
+  color: #2b8a3e;
+  border-color: #b2f2bb !important;
+  font-weight: 700;
+}
+.btn-template-delete {
+  color: #c92a2a;
+  border-color: #ffc9c9 !important;
+}
+.template-help { color: #777; font-size: .78rem; margin-top: 8px; }
+@media (max-width: 600px) {
+  .template-controls { grid-template-columns: 1fr 1fr; }
+  .template-controls select { grid-column: 1 / -1; }
+  .template-controls button { width: 100%; }
+}
+
 /* RESPONSIVE */
 @media (max-width: 1200px) {
   .board { grid-template-columns: repeat(2, 1fr); }
@@ -451,6 +507,22 @@ header p { opacity: 0.9; }
 
       <button type="button" class="btn-add" id="btnTambah">+ Tambah</button>
     </div>
+  </div>
+
+  <!-- TEMPLATE AKTIVITAS -->
+  <div class="form-card template-panel">
+    <div class="template-heading">
+      <h3>⚡ Template Aktivitas</h3>
+      <button type="button" class="btn-template-save" id="btnSimpanTemplate">＋ Simpan Form sebagai Template</button>
+    </div>
+    <div class="template-controls">
+      <select id="pilihTemplate" aria-label="Pilih template aktivitas">
+        <option value="">Pilih template yang tersimpan...</option>
+      </select>
+      <button type="button" class="btn-template-use" id="btnTambahTemplate">＋ Tambah Sekarang</button>
+      <button type="button" class="btn-template-delete" id="btnHapusTemplate">Hapus Template</button>
+    </div>
+    <p class="template-help">Simpan aktivitas rutin sekali saja, lalu pilih template dan tekan “Tambah Sekarang”. Template tersimpan di browser ini.</p>
   </div>
 
   <!-- BOARD -->
@@ -550,6 +622,155 @@ const keteranganInput = document.getElementById('keterangan');
 const filterTanggalInput = document.getElementById('filterTanggal');
 const btnTambah = document.getElementById('btnTambah');
 const connectionStatus = document.getElementById('connectionStatus');
+const pilihTemplate = document.getElementById('pilihTemplate');
+const btnSimpanTemplate = document.getElementById('btnSimpanTemplate');
+const btnTambahTemplate = document.getElementById('btnTambahTemplate');
+const btnHapusTemplate = document.getElementById('btnHapusTemplate');
+
+const TEMPLATE_STORAGE_KEY = 'activitiesHarianTemplates';
+let activityTemplates = loadTemplates();
+
+function loadTemplates() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(TEMPLATE_STORAGE_KEY) || '[]');
+    return Array.isArray(saved) ? saved.filter(t => t && t.id && t.nama) : [];
+  } catch (error) {
+    console.warn('Template tersimpan tidak dapat dibaca:', error);
+    return [];
+  }
+}
+
+function saveTemplates() {
+  try {
+    localStorage.setItem(TEMPLATE_STORAGE_KEY, JSON.stringify(activityTemplates));
+    renderTemplates();
+    return true;
+  } catch (error) {
+    alert('Template gagal disimpan di browser. Periksa ruang penyimpanan browser.');
+    return false;
+  }
+}
+
+function renderTemplates() {
+  const selectedId = pilihTemplate.value;
+  pilihTemplate.innerHTML = '<option value="">Pilih template yang tersimpan...</option>';
+  activityTemplates.forEach(function (template) {
+    const option = document.createElement('option');
+    option.value = template.id;
+    option.textContent = `${template.nama} — ${labelKategori(template.kategori)}`;
+    pilihTemplate.appendChild(option);
+  });
+  if (activityTemplates.some(t => t.id === selectedId)) {
+    pilihTemplate.value = selectedId;
+  }
+  const hasTemplates = activityTemplates.length > 0;
+  btnTambahTemplate.disabled = !hasTemplates;
+  btnHapusTemplate.disabled = !hasTemplates;
+}
+
+function labelKategori(kategori) {
+  const labels = {
+    tugas: '📌 Tugas',
+    jadwal: '🗓️ Jadwal',
+    kegiatan: '🎯 Kegiatan',
+    main: '🎮 Main'
+  };
+  return labels[kategori] || kategori;
+}
+
+function simpanTemplate() {
+  const nama = namaInput.value.trim();
+  const kategori = kategoriInput.value;
+  const jam = jamInput.value;
+  const keterangan = keteranganInput.value.trim();
+
+  if (!nama) {
+    alert('Isi nama aktivitas terlebih dahulu sebelum menyimpan template.');
+    namaInput.focus();
+    return;
+  }
+  if (!KATEGORI_LIST.includes(kategori)) {
+    alert('Kategori tidak valid.');
+    return;
+  }
+
+  const existing = activityTemplates.find(t =>
+    t.nama.toLowerCase() === nama.toLowerCase() &&
+    t.kategori === kategori &&
+    (t.jam || '') === jam &&
+    (t.keterangan || '') === keterangan
+  );
+  if (existing) {
+    pilihTemplate.value = existing.id;
+    alert('Template dengan isi yang sama sudah tersedia.');
+    return;
+  }
+
+  activityTemplates.push({
+    id: 'tpl_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 7),
+    nama,
+    kategori,
+    jam,
+    keterangan
+  });
+
+  if (saveTemplates()) {
+    const latest = activityTemplates[activityTemplates.length - 1];
+    pilihTemplate.value = latest.id;
+    alert('Template berhasil disimpan. Berikutnya tinggal pilih template dan tekan “Tambah Sekarang”.');
+  }
+}
+
+function tambahDariTemplate() {
+  const template = activityTemplates.find(t => t.id === pilihTemplate.value);
+  if (!template) {
+    alert('Pilih template terlebih dahulu.');
+    pilihTemplate.focus();
+    return;
+  }
+  if (!tanggalInput.value) {
+    alert('Tanggal harus diisi!');
+    tanggalInput.focus();
+    return;
+  }
+  if (!firebaseReady) {
+    alert('Masih menghubungkan ke server, mohon tunggu...');
+    return;
+  }
+
+  const newActivity = {
+    nama: template.nama,
+    kategori: template.kategori,
+    tanggal: tanggalInput.value,
+    jam: template.jam || '-',
+    keterangan: template.keterangan || '',
+    status: 'belum',
+    createdAt: Date.now()
+  };
+
+  const newRef = push(ref(db, 'activities'));
+  btnTambahTemplate.disabled = true;
+  set(newRef, newActivity)
+    .then(() => {
+      alert(`Aktivitas “${template.nama}” berhasil ditambahkan.`);
+    })
+    .catch(err => {
+      alert('Gagal menambahkan aktivitas dari template: ' + err.message);
+    })
+    .finally(() => renderTemplates());
+}
+
+function hapusTemplateTerpilih() {
+  const template = activityTemplates.find(t => t.id === pilihTemplate.value);
+  if (!template) {
+    alert('Pilih template yang ingin dihapus.');
+    pilihTemplate.focus();
+    return;
+  }
+  if (!confirm(`Hapus template “${template.nama}”? Aktivitas yang sudah dibuat tidak akan ikut terhapus.`)) return;
+  activityTemplates = activityTemplates.filter(t => t.id !== template.id);
+  saveTemplates();
+}
 
 /* =========================================================
    TANGGAL HARI INI
@@ -888,6 +1109,9 @@ document.getElementById('btnSemuaTanggal')
 ========================================================= */
 
 btnTambah.addEventListener('click', tambahItem);
+btnSimpanTemplate.addEventListener('click', simpanTemplate);
+btnTambahTemplate.addEventListener('click', tambahDariTemplate);
+btnHapusTemplate.addEventListener('click', hapusTemplateTerpilih);
 
 namaInput.addEventListener('keydown', function (e) {
   if (e.key === 'Enter') {
@@ -943,6 +1167,7 @@ onValue(activitiesRef, function (snapshot) {
    DEFAULT
 ========================================================= */
 
+renderTemplates();
 tanggalInput.value = todayStr();
 resetFilterTanggal();
 render();
