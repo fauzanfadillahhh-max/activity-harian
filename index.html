@@ -316,6 +316,21 @@ header p { opacity: 0.9; }
   font-size: 0.75rem;
 }
 
+/* LABEL TUGAS AKTIF: tugas belum terlaksana pada tanggal apa pun */
+.active-task-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0 0 7px;
+  padding: 4px 9px;
+  border-radius: 7px;
+  background: #fff0f0;
+  color: #c92a2a;
+  border: 1px solid #ffc9c9;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
 .item-desc {
   font-size: 0.82rem;
   color: #777;
@@ -364,6 +379,85 @@ header p { opacity: 0.9; }
   font-style: italic;
 }
 
+
+/* PENGUMUMAN TUGAS AKTIF */
+.announcement-panel {
+  background: linear-gradient(135deg, #fff8e7 0%, #fff1f1 100%);
+  border: 1px solid #ffd8a8;
+  border-left: 6px solid #ff922b;
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.10);
+}
+.announcement-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.announcement-kicker {
+  color: #c05621;
+  font-size: .75rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  margin-bottom: 4px;
+}
+.announcement-head h2 {
+  color: #7c2d12;
+  font-size: 1.15rem;
+  margin-bottom: 4px;
+}
+.announcement-head p {
+  color: #8a5a44;
+  font-size: .85rem;
+}
+.announcement-count {
+  flex-shrink: 0;
+  border-radius: 20px;
+  background: #ff922b;
+  color: white;
+  font-size: .8rem;
+  font-weight: 700;
+  padding: 5px 11px;
+}
+.announcement-list {
+  display: grid;
+  gap: 8px;
+}
+.announcement-item {
+  background: rgba(255,255,255,.88);
+  border: 1px solid #ffe0c2;
+  border-radius: 9px;
+  padding: 10px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.announcement-task-name {
+  color: #343a40;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+.announcement-task-meta {
+  color: #9a3412;
+  font-size: .8rem;
+  margin-top: 3px;
+}
+.announcement-empty {
+  background: rgba(255,255,255,.75);
+  border-radius: 9px;
+  padding: 12px;
+  color: #667;
+  font-size: .88rem;
+}
+@media (max-width: 600px) {
+  .announcement-panel { padding: 15px; }
+  .announcement-head { flex-direction: column; }
+  .announcement-item { align-items: flex-start; flex-direction: column; }
+}
 
 /* TEMPLATE AKTIVITAS */
 .template-panel {
@@ -471,6 +565,21 @@ header p { opacity: 0.9; }
       <button type="button" data-filter="tidak">Tidak</button>
     </div>
   </div>
+
+  <!-- PENGUMUMAN / PENGINGAT TUGAS AKTIF -->
+  <section class="announcement-panel" id="announcementPanel" aria-live="polite">
+    <div class="announcement-head">
+      <div>
+        <div class="announcement-kicker">🔔 PENGINGAT</div>
+        <h2>Pengumuman Tugas Aktif</h2>
+        <p>Daftar tugas yang belum terlaksana, dari tanggal mana pun.</p>
+      </div>
+      <span class="announcement-count" id="announcementCount">0 tugas</span>
+    </div>
+    <div id="announcementList" class="announcement-list">
+      <div class="announcement-empty">Tidak ada tugas aktif. Semua tugas sudah ditangani! 🎉</div>
+    </div>
+  </section>
 
   <!-- FORM TAMBAH -->
   <div class="form-card">
@@ -626,6 +735,8 @@ const pilihTemplate = document.getElementById('pilihTemplate');
 const btnSimpanTemplate = document.getElementById('btnSimpanTemplate');
 const btnTambahTemplate = document.getElementById('btnTambahTemplate');
 const btnHapusTemplate = document.getElementById('btnHapusTemplate');
+const announcementList = document.getElementById('announcementList');
+const announcementCount = document.getElementById('announcementCount');
 
 const TEMPLATE_STORAGE_KEY = 'activitiesHarianTemplates';
 let activityTemplates = loadTemplates();
@@ -841,10 +952,47 @@ function statusClass(status) {
 }
 
 /* =========================================================
+   RENDER PENGUMUMAN TUGAS AKTIF
+========================================================= */
+
+function renderAnnouncement() {
+  // Tugas aktif = kategori tugas dengan status belum terlaksana,
+  // tanpa membatasi tanggal (termasuk tugas lampau maupun mendatang).
+  const activeTasks = activities
+    .filter(item => item.kategori === 'tugas' && (item.status || 'belum') === 'belum')
+    .sort((a, b) => {
+      const keyA = `${a.tanggal || ''}_${a.jam || ''}`;
+      const keyB = `${b.tanggal || ''}_${b.jam || ''}`;
+      return keyA.localeCompare(keyB);
+    });
+
+  announcementCount.textContent = `${activeTasks.length} tugas`;
+
+  if (activeTasks.length === 0) {
+    announcementList.innerHTML =
+      '<div class="announcement-empty">🎉 Tidak ada tugas aktif. Semua tugas sudah ditangani!</div>';
+    return;
+  }
+
+  announcementList.innerHTML = activeTasks.map(item => `
+    <div class="announcement-item">
+      <div>
+        <div class="announcement-task-name">📌 ${escapeHtml(item.nama)}</div>
+        <div class="announcement-task-meta">
+          📅 ${formatTanggal(item.tanggal)} &nbsp; • &nbsp; 🕒 ${escapeHtml(item.jam || '-')}
+        </div>
+      </div>
+      <span class="active-task-badge">🔥 Tugas Aktif</span>
+    </div>
+  `).join('');
+}
+
+/* =========================================================
    RENDER
 ========================================================= */
 
 function render() {
+  renderAnnouncement();
   KATEGORI_LIST.forEach(function (kategori) {
     const list = document.getElementById('list-' + kategori);
 
